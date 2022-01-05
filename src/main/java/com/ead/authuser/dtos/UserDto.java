@@ -3,7 +3,8 @@ package com.ead.authuser.dtos;
 import com.ead.authuser.validation.UsernameConstraint;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonView;
-import lombok.*;
+import lombok.Data;
+import lombok.ToString;
 import org.hibernate.validator.constraints.br.CPF;
 
 import javax.validation.constraints.Email;
