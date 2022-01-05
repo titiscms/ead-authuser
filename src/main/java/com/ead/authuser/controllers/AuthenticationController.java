@@ -6,8 +6,9 @@ import com.ead.authuser.enums.UserType;
 import com.ead.authuser.models.UserModel;
 import com.ead.authuser.services.UserService;
 import com.fasterxml.jackson.annotation.JsonView;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.log4j.Log4j2;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,12 +19,13 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
+@Log4j2
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping(path = "/auth")
 public class AuthenticationController {
 
-    Logger logger = LoggerFactory.getLogger(AuthenticationController.class);
+    Logger logger = LogManager.getLogger(AuthenticationController.class);
 
     @Autowired
     private UserService userService;
@@ -53,12 +55,12 @@ public class AuthenticationController {
         logger.info("INFO");
         logger.warn("WARN");
         logger.error("ERROR");
-//        try {
-//            throw new RuntimeException();
-//        } catch (Exception e) {
-//
-//            e.printStackTrace();
-//        }
+
+        log.trace("TRACE + Lombok...");
+        log.debug("DEBUG + Lombok...");
+        log.info("INFO + Lombok...");
+        log.warn("WARN + Lombok...");
+        log.error("ERROR + Lombok...");
         return "Logging Spring Boot...";
     }
 
