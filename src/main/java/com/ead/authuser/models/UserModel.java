@@ -58,7 +58,8 @@ public class UserModel extends RepresentationModel<UserModel> implements Seriali
     private LocalDateTime lastUpdateDate;
 
     // I am using FetchMode.JOIN to previne LazyInitializationException
-    @Fetch(FetchMode.JOIN)
+    // It conflicts with the SpecificationTemplate.userCourseId method
+    // @Fetch(FetchMode.JOIN)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<UserCourseModel> usersCourses;

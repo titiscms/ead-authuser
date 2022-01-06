@@ -36,8 +36,16 @@ public class UserController {
     private UserService userService;
 
     @GetMapping
-    public ResponseEntity<Page<UserModel>> getAllUsers(SpecificationTemplate.UserSpec spec, @PageableDefault(page = 0, size = 10, sort = "userId", direction = Sort.Direction.ASC) Pageable pageable) {
-        Page<UserModel> userModelPage = userService.findAll(spec, pageable);
+    public ResponseEntity<Page<UserModel>> getAllUsers(SpecificationTemplate.UserSpec spec,
+                                                       @PageableDefault(page = 0, size = 10, sort = "userId", direction = Sort.Direction.ASC) Pageable pageable,
+                                                       @RequestParam(required = false) UUID courseId) {
+        Page<UserModel> userModelPage;
+        if (courseId != null) {
+            userModelPage = userService.findAll(SpecificationTemplate.userCourseId(courseId).and(spec), pageable);
+        } else {
+            userModelPage = userService.findAll(spec, pageable);
+        }
+
         if (!userModelPage.isEmpty()) {
             for (UserModel userModel : userModelPage.toList()) {
                 userModel.add(linkTo(methodOn(UserController.class).getOneUser(userModel.getUserId())).withSelfRel());
@@ -54,7 +62,7 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(MSG_USER_NOT_FOUND);
         }
         UserModel userModel = userModelOptional.get();
-        log.debug("GET getOneUser userModel retrieved {} ", userModel.toString());
+        log.debug("GET getOneUser userId retrieved {} ", userModel.getUserId());
         return ResponseEntity.status(HttpStatus.OK).body(userModel);
     }
 
@@ -84,7 +92,7 @@ public class UserController {
         userModel.setCpf(userDto.getCpf());
         userModel.setLastUpdateDate(LocalDateTime.now(ZoneId.of("UTC")));
         userService.save(userModel);
-        log.debug("PUT updateUser userModel updated {} ", userModel.toString());
+        log.debug("PUT updateUser userId updated {} ", userModel.getUserId());
         log.info("User updated successfully userId {}", userModel.getUserId());
         return ResponseEntity.status(HttpStatus.OK).body(userModel);
     }
@@ -104,7 +112,7 @@ public class UserController {
         userModel.setPassword(userDto.getPassword());
         userModel.setLastUpdateDate(LocalDateTime.now(ZoneId.of("UTC")));
         userService.save(userModel);
-        log.debug("PUT updateUser userModel updated {} ", userModel.toString());
+        log.debug("PUT updateUser userId updated {} ", userModel.getUserId());
         log.info("Password updated successfully userId {}", userModel.getUserId());
         return ResponseEntity.status(HttpStatus.OK).body("Password updated successfully!");
     }
@@ -120,7 +128,7 @@ public class UserController {
         userModel.setImageUrl(userDto.getImageUrl());
         userModel.setLastUpdateDate(LocalDateTime.now(ZoneId.of("UTC")));
         userService.save(userModel);
-        log.debug("PUT updateImage userModel updated {} ", userModel.toString());
+        log.debug("PUT updateImage userId updated {} ", userModel.getUserId());
         log.info("Image updated successfully userId {}", userModel.getUserId());
         return ResponseEntity.status(HttpStatus.OK).body(userModel);
     }
