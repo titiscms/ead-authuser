@@ -26,13 +26,7 @@ public class UserCourseController {
     @GetMapping
     public ResponseEntity<Page<CourseDto>> getAllCoursesByUser(@PathVariable UUID userId,
                                                                @PageableDefault(page = 0, size = 10, sort = "courseId", direction = Sort.Direction.ASC) Pageable pageable) {
-
         Page<CourseDto> allCoursesByUserPage = userClient.getAllCoursesByUser(userId, pageable);
-//        if (!allCoursesByUserPage.isEmpty()) {
-//            for (CourseDto courseDto : allCoursesByUserPage.toList()) {
-//                courseDto.add(linkTo(methodOn(UserCourseController.class).getAllCoursesByUser(userId, pageable))).withSelRel());
-//            }
-//        }
         return ResponseEntity.status(HttpStatus.OK).body(allCoursesByUserPage);
     }
 }
