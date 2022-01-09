@@ -73,7 +73,7 @@ public class UserController {
         if (userModelOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(MSG_USER_NOT_FOUND);
         }
-        userService.delete(userId);
+        userService.delete(userModelOptional.get());
         log.debug("DELETE deleteUser userId deleted {} ", userId);
         log.info("User deleted successfully userId {}", userId);
         return ResponseEntity.status(HttpStatus.OK).body("User deleted successfully!");
