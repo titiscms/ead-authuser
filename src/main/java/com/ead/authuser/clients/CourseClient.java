@@ -35,7 +35,7 @@ public class CourseClient {
 
     public Page<CourseDto> getAllCoursesByUser(UUID userId, Pageable pageable) {
         List<CourseDto> searchResult = new ArrayList<>();
-        String url = REQUEST_URI_COURSE + utilsService.getUrl(userId, pageable);
+        String url = REQUEST_URI_COURSE + utilsService.getUrlGetAllCourseByUser(userId, pageable);
         log.debug("Request URL: {} ", url);
         log.info("Request URL: {} ", url);
         try {
@@ -51,9 +51,16 @@ public class CourseClient {
     }
 
     public ResponseEntity<CourseDto> getOneCourseById(UUID courseId) {
-        String url = REQUEST_URI_COURSE + utilsService.getCourseById(courseId);
+        String url = REQUEST_URI_COURSE + utilsService.getUrlGetCourseById(courseId);
         log.debug("Request URL: {} ", url);
         log.info("Request URL: {} ", url);
         return restTemplate.exchange(url, HttpMethod.GET, null, CourseDto.class);
+    }
+
+    public void deleteUserInCourse(UUID userId) {
+        String url = REQUEST_URI_COURSE + utilsService.getUrlDeleteCourseUserByUser(userId);
+        log.debug("Request URL: {} ", url);
+        log.info("Request URL: {} ", url);
+        restTemplate.exchange(url, HttpMethod.DELETE, null, String.class);
     }
 }

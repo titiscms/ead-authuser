@@ -10,13 +10,18 @@ import java.util.UUID;
 public class UtilsServiceImpl implements UtilsService {
 
     @Override
-    public String getUrl(UUID userId, Pageable pageable) {
+    public String getUrlGetAllCourseByUser(UUID userId, Pageable pageable) {
         return "/courses?userId=" + userId + "&page=" + pageable.getPageNumber() + "&size="
                 + pageable.getPageSize() + "&sort=" + pageable.getSort().toString().replace(": ", ",");
     }
 
     @Override
-    public String getCourseById(UUID courseId) {
+    public String getUrlGetCourseById(UUID courseId) {
         return "/courses/" + courseId;
+    }
+
+    @Override
+    public String getUrlDeleteCourseUserByUser(UUID userId) {
+        return "/courses/users/" + userId ;
     }
 }
