@@ -49,18 +49,4 @@ public class CourseClient {
         log.info("Ending request /courses userId {}", userId);
         return new PageImpl<>(searchResult);
     }
-
-    public ResponseEntity<CourseDto> getOneCourseById(UUID courseId) {
-        String url = REQUEST_URI_COURSE + utilsService.getUrlGetCourseById(courseId);
-        log.debug("Request URL: {} ", url);
-        log.info("Request URL: {} ", url);
-        return restTemplate.exchange(url, HttpMethod.GET, null, CourseDto.class);
-    }
-
-    public void deleteUserInCourse(UUID userId) {
-        String url = REQUEST_URI_COURSE + utilsService.getUrlDeleteCourseUserByUser(userId);
-        log.debug("Request URL: {} ", url);
-        log.info("Request URL: {} ", url);
-        restTemplate.exchange(url, HttpMethod.DELETE, null, String.class);
-    }
 }
