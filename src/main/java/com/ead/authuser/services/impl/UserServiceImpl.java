@@ -1,8 +1,12 @@
 package com.ead.authuser.services.impl;
 
+import com.ead.authuser.dtos.UserEventDto;
+import com.ead.authuser.enums.ActionType;
 import com.ead.authuser.models.UserModel;
+import com.ead.authuser.publishers.UserEventPublisher;
 import com.ead.authuser.repositories.UserRepository;
 import com.ead.authuser.services.UserService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +23,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private UserEventPublisher userEventPublisher;
 
     @Override
     public List<UserModel> findAll() {
@@ -45,6 +52,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserModel save(UserModel userModel) {
         return userRepository.save(userModel);
+    }
+
+    @Transactional
+    @Override
+    public UserModel saveUser(UserModel userModel) {
+        var userModelSaved = save(userModel);
+        var userEventDto = userModelSaved.convertToUserEventDto();
+        userEventPublisher.publisherUserEvent(userEventDto, ActionType.CREATE);
+        return userModelSaved;
     }
 
     @Override
