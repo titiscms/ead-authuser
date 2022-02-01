@@ -8,8 +8,8 @@ spring:
     name: ead-authuser-service
   datasource:
     url: jdbc:postgresql://localhost:5432/ead-authuser
-    username: postgres
-    password: postgres
+    username: ***
+    password: ***
   jpa:
     hibernate:
       ddl-auto: update
