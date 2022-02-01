@@ -22,6 +22,8 @@ spring:
   output:
     ansi:
       enabled: always
+  rabbitmq:
+    addresses: amqps://zuelxptg:IGVH8udZjprNPYPXDYDU6ZdX_QZTi8Ip@toad.rmq.cloudamqp.com/zuelxptg
 
 logging:
   level:

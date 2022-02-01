@@ -38,6 +38,7 @@ public class UserModel extends RepresentationModel<UserModel> implements Seriali
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private UserStatus userStatus;
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private UserType userType;
     @Column(length = 20)
