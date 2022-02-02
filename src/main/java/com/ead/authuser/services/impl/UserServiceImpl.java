@@ -54,6 +54,16 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(userModel);
     }
 
+    @Override
+    public boolean existsByUsername(String username) {
+        return userRepository.existsByUsername(username);
+    }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        return userRepository.existsByEmail(email);
+    }
+
     @Transactional
     @Override
     public UserModel saveUser(UserModel userModel) {
@@ -63,14 +73,27 @@ public class UserServiceImpl implements UserService {
         return userModelSaved;
     }
 
+    @Transactional
     @Override
-    public boolean existsByUsername(String username) {
-        return userRepository.existsByUsername(username);
+    public void deleteUser(UserModel userModel) {
+        delete(userModel);
+        var userEventDto = userModel.convertToUserEventDto();
+        userEventPublisher.publisherUserEvent(userEventDto, ActionType.DELETE);
     }
 
+    @Transactional
     @Override
-    public boolean existsByEmail(String email) {
-        return userRepository.existsByEmail(email);
+    public UserModel updateUser(UserModel userModel) {
+        var userModelUpdated = save(userModel);
+        var useEventDto = userModelUpdated.convertToUserEventDto();
+        userEventPublisher.publisherUserEvent(useEventDto, ActionType.UPDATE);
+        return userModelUpdated;
+    }
+
+    @Transactional
+    @Override
+    public UserModel updatePassword(UserModel userModel) {
+        return save(userModel);
     }
 
 }
