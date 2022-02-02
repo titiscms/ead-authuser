@@ -12,14 +12,24 @@ import java.util.UUID;
 public interface UserService {
 
     List<UserModel> findAll();
+
     Page<UserModel> findAll(Specification<UserModel> spec, Pageable pageable);
+
     Optional<UserModel> findById(UUID userId);
+
     void delete(UserModel userModel);
+
     UserModel save(UserModel userModel);
+
     boolean existsByUsername(String username);
+
     boolean existsByEmail(String email);
+
     UserModel saveUser(UserModel userModel);
+
     void deleteUser(UserModel userModel);
+
     UserModel updateUser(UserModel userModel);
+
     UserModel updatePassword(UserModel userModel);
 }
