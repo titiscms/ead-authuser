@@ -9,6 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Set;
 import java.util.UUID;
 
 @Data
