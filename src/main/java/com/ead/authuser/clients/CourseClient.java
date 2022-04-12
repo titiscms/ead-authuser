@@ -12,6 +12,8 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -38,14 +40,15 @@ public class CourseClient {
 //    @Retry(name = "retryInstance", fallbackMethod = "retryFallback")
     // no caso dessa chamada não faria sentido ter um metodo fallback para esse circuit breaker.
     @CircuitBreaker(name = "circuitbreakerInstance", fallbackMethod = "circuitbreakerFallback")
-    public Page<CourseDto> getAllCoursesByUser(UUID userId, Pageable pageable) {
+    public Page<CourseDto> getAllCoursesByUser(UUID userId, Pageable pageable, String token) {
         List<CourseDto> searchResult = new ArrayList<>();
         String url = REQUEST_URI_COURSE + utilsService.getUrlGetAllCourseByUser(userId, pageable);
         log.debug("Request URL: {} ", url);
         log.info("Request URL: {} ", url);
+        // TODO : Remove try / catch before global exception handling
         try {
             ParameterizedTypeReference<ResponsePageDto<CourseDto>> responseType = new ParameterizedTypeReference<>() {};
-            ResponseEntity<ResponsePageDto<CourseDto>> result = restTemplate.exchange(url, HttpMethod.GET, null, responseType);
+            ResponseEntity<ResponsePageDto<CourseDto>> result = restTemplate.exchange(url, HttpMethod.GET, buildRequestEntity(token), responseType);
             searchResult = result.getBody().getContent();
             log.debug("Response number of elements: {} ", searchResult.size());
         } catch (HttpStatusCodeException e) {
@@ -65,5 +68,11 @@ public class CourseClient {
         log.error("Inside circuit breaker circuitbreakerFallback, cause - {} ", cause.toString());
         List<CourseDto> searchResult = new ArrayList<>();
         return new PageImpl<>(searchResult);
+    }
+
+    private HttpEntity<String> buildRequestEntity(String token) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", token);
+        return new HttpEntity<>("parameters", headers);
     }
 }

@@ -12,6 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -29,15 +30,17 @@ public class UserCourseController {
     @Autowired
     private UserService userService;
 
+    @PreAuthorize("hasAnyRole('STUDENT')")
     @GetMapping(path = "/{userId}/courses")
     public ResponseEntity<Object> getAllCoursesByUser(@PathVariable UUID userId,
-                                                               @PageableDefault(page = 0, size = 10, sort = "courseId", direction = Sort.Direction.ASC) Pageable pageable) {
+                                                      @PageableDefault(page = 0, size = 10, sort = "courseId", direction = Sort.Direction.ASC) Pageable pageable,
+                                                      @RequestHeader("Authorization") String token) {
         log.debug("GET getAllCoursesByUser userId received {} ", userId);
         Optional<UserModel> userModelOptional = userService.findById(userId);
         if (userModelOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
         }
-        Page<CourseDto> allCoursesByUserPage = courseClient.getAllCoursesByUser(userId, pageable);
+        Page<CourseDto> allCoursesByUserPage = courseClient.getAllCoursesByUser(userId, pageable, token);
         log.debug("GET getAllCoursesByUser totalElements {} ", allCoursesByUserPage.getTotalElements());
         return ResponseEntity.status(HttpStatus.OK).body(allCoursesByUserPage);
     }
