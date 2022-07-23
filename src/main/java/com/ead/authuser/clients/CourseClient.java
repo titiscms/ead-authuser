@@ -39,7 +39,8 @@ public class CourseClient {
 
 //    @Retry(name = "retryInstance", fallbackMethod = "retryFallback")
     // no caso dessa chamada não faria sentido ter um metodo fallback para esse circuit breaker.
-    @CircuitBreaker(name = "circuitbreakerInstance", fallbackMethod = "circuitbreakerFallback")
+//    @CircuitBreaker(name = "circuitbreakerInstance", fallbackMethod = "circuitbreakerFallback")
+    @CircuitBreaker(name = "circuitbreakerInstance")
     public Page<CourseDto> getAllCoursesByUser(UUID userId, Pageable pageable, String token) {
         List<CourseDto> searchResult = new ArrayList<>();
         String url = REQUEST_URI_COURSE + utilsService.getUrlGetAllCourseByUser(userId, pageable);
