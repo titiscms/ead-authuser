@@ -16,6 +16,9 @@
     <properties>
         <java.version>11</java.version>
         <spring-cloud.version>2020.0.5</spring-cloud.version>
+        <log4j2.version>2.17.1</log4j2.version>
+        <postgresql.version>42.2.27</postgresql.version>
+        <ecs-logging-java.version>1.5.0</ecs-logging-java.version>
     </properties>
     <dependencies>
         <dependency>
@@ -37,6 +40,7 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
+            <version>${postgresql.version}</version>
             <scope>runtime</scope>
         </dependency>
 
@@ -115,6 +119,12 @@
             <groupId>org.glassfish.jaxb</groupId>
             <artifactId>jaxb-runtime</artifactId>
             <version>3.0.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>co.elastic.logging</groupId>
+            <artifactId>log4j2-ecs-layout</artifactId>
+            <version>${ecs-logging-java.version}</version>
         </dependency>
     </dependencies>
 
