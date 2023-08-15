@@ -4,7 +4,7 @@
         <Console name="LogToConsole" target="SYSTEM_OUT">
             <EcsLayout serviceName="ead-authuser-service" serviceVersion="0.0.1" serviceEnvironment="development" serviceNodeName="ead-cluster-node"/>
         </Console>
-        <File name="LogToFile" fileName="authuser/logs/ead-authuser-service.log">
+        <File name="LogToFile" fileName="logs/ead-authuser-service.log">
             <EcsLayout serviceName="ead-authuser-service" serviceVersion="0.0.1" serviceEnvironment="development" serviceNodeName="ead-cluster-node"/>
         </File>
     </Appenders>
